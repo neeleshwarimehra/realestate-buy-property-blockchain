@@ -2,18 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
-import {
-  CONTRACT_ADDRESS,
-  CONTRACT_ABI,
-} from "@/lib/realEstateContract";
+import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/lib/realEstateContract";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-declare global {
-  interface Window {
-    ethereum?: any;
-  }
-}
+// declare global {
+//   interface Window {
+//     ethereum?: any;
+//   }
+// }
 
 export default function RealEstateShares() {
   const [propertyName, setPropertyName] = useState("");
@@ -37,27 +34,28 @@ export default function RealEstateShares() {
     const provider = new ethers.BrowserProvider(window.ethereum);
     const signer = await provider.getSigner();
 
-    return new ethers.Contract(
-      CONTRACT_ADDRESS,
-      CONTRACT_ABI,
-      signer
-    );
+    return new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
   }
 
   async function loadPropertyData() {
     try {
       const contract = await getContract();
 
-      const name = await contract.propertyName();
-      const total = await contract.totalShares();
-      const price = await contract.pricePerShare();
-      const sold = await contract.sharesSold();
-      const available = await contract.sharesAvailable();
+      const [name, total, price, sold, available] = await Promise.all([
+        contract.propertyName(),
+        contract.totalShares(),
+        contract.pricePerShare(),
+        contract.sharesSold(),
+        contract.sharesAvailable(),
+      ]);
 
-      const signer = await contract.runner?.getAddress();
-      const owned = signer
-        ? await contract.sharesOwned(signer)
-        : 0;
+      // Get the connected wallet address from the signer.
+      // IMPORTANT: sharesOwned must exist in your Solidity contract/ABI.
+      const provider = new ethers.BrowserProvider(window.ethereum!);
+      const walletSigner = await provider.getSigner();
+      const signerAddress = await walletSigner.getAddress();
+
+      const owned = await contract.sharesOwned(signerAddress);
 
       setPropertyName(name);
       setTotalShares(total.toString());
@@ -68,26 +66,26 @@ export default function RealEstateShares() {
 
       calculateTotalCost(shareAmount, price);
     } catch (error) {
-      console.error(error);
+      console.error("Failed to load property data:", error);
+
+      setMessage(
+        error instanceof Error
+          ? error.message
+          : "Unable to load property data.",
+      );
     }
   }
 
-  function calculateTotalCost(
-    amount: string,
-    price?: bigint
-  ) {
+  function calculateTotalCost(amount: string, price?: bigint) {
     try {
-      if (!amount || Number(amount) <= 0) {
+      if (!/^\d+$/.test(amount) || BigInt(amount) <= 0n) {
         setTotalCost("0");
         return;
       }
 
-      const priceInWei =
-        price ??
-        ethers.parseEther(pricePerShare || "0");
+      const priceInWei = price ?? ethers.parseEther(pricePerShare || "0");
 
-      const cost =
-        priceInWei * BigInt(amount);
+      const cost = priceInWei * BigInt(amount);
 
       setTotalCost(ethers.formatEther(cost));
     } catch {
@@ -104,10 +102,15 @@ export default function RealEstateShares() {
         return;
       }
 
+      if (!/^[1-9]\d*$/.test(shareAmount)) {
+        setMessage("Enter a valid positive whole number of shares.");
+        return;
+      }
+
       const amount = Number(shareAmount);
 
-      if (!amount || amount <= 0) {
-        setMessage("Enter a valid share amount.");
+      if (!Number.isSafeInteger(amount)) {
+        setMessage("Share quantity is too large.");
         return;
       }
 
@@ -119,11 +122,8 @@ export default function RealEstateShares() {
       setLoading(true);
 
       const contract = await getContract();
-
-      const price = await contract.pricePerShare();
-
-      const cost =
-        price * BigInt(amount);
+      const price: bigint = await contract.pricePerShare();
+      const cost = price * BigInt(amount);
 
       setTotalCost(ethers.formatEther(cost));
 
@@ -133,18 +133,30 @@ export default function RealEstateShares() {
 
       setMessage("Transaction submitted. Waiting for confirmation...");
 
-      await tx.wait();
+      const receipt = await tx.wait();
+
+      if (!receipt || receipt.status !== 1) {
+        throw new Error("Transaction failed or was reverted.");
+      }
 
       setMessage("Shares purchased successfully!");
 
       await loadPropertyData();
-    } catch (error: any) {
-      console.error(error);
+    } catch (error: unknown) {
+      console.error("Share purchase failed:", error);
 
-      if (error?.reason) {
-        setMessage(error.reason);
-      } else if (error?.shortMessage) {
-        setMessage(error.shortMessage);
+      if (error instanceof Error) {
+        const err = error as Error & {
+          reason?: string;
+          shortMessage?: string;
+        };
+
+        setMessage(
+          err.reason ||
+            err.shortMessage ||
+            err.message ||
+            "Transaction failed.",
+        );
       } else {
         setMessage("Transaction failed.");
       }
@@ -154,7 +166,7 @@ export default function RealEstateShares() {
   }
 
   useEffect(() => {
-    loadPropertyData();
+    void loadPropertyData();
   }, []);
 
   return (
@@ -168,36 +180,24 @@ export default function RealEstateShares() {
       <CardContent>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <div className="bg-gray-800 rounded-lg p-4">
-            <p className="text-gray-400 text-sm">
-              Total Shares
-            </p>
-            <p className="text-xl font-bold">
-              {totalShares}
-            </p>
+            <p className="text-gray-400 text-sm">Total Shares</p>
+            <p className="text-xl font-bold">{totalShares}</p>
           </div>
 
           <div className="bg-gray-800 rounded-lg p-4">
-            <p className="text-gray-400 text-sm">
-              Price / Share
-            </p>
+            <p className="text-gray-400 text-sm">Price / Share</p>
             <p className="text-xl font-bold text-blue-400">
               {pricePerShare} ETH
             </p>
           </div>
 
           <div className="bg-gray-800 rounded-lg p-4">
-            <p className="text-gray-400 text-sm">
-              Shares Sold
-            </p>
-            <p className="text-xl font-bold">
-              {sharesSold}
-            </p>
+            <p className="text-gray-400 text-sm">Shares Sold</p>
+            <p className="text-xl font-bold">{sharesSold}</p>
           </div>
 
           <div className="bg-gray-800 rounded-lg p-4">
-            <p className="text-gray-400 text-sm">
-              Available
-            </p>
+            <p className="text-gray-400 text-sm">Available</p>
             <p className="text-xl font-bold text-green-400">
               {sharesAvailable}
             </p>
@@ -205,22 +205,22 @@ export default function RealEstateShares() {
         </div>
 
         <div className="bg-gray-800 rounded-lg p-5">
-          <p className="text-gray-400">
-            Your Shares
-          </p>
+          <p className="text-gray-400">Your Shares</p>
+          <p className="text-3xl font-bold mb-6">{userShares}</p>
 
-          <p className="text-3xl font-bold mb-6">
-            {userShares}
-          </p>
-
-          <label className="block text-sm text-gray-300 mb-2">
+          <label
+            htmlFor="shareAmount"
+            className="block text-sm text-gray-300 mb-2"
+          >
             Number of Shares
           </label>
 
           <input
+            id="shareAmount"
             type="number"
             min="1"
             max={sharesAvailable}
+            step="1"
             value={shareAmount}
             onChange={(e) => {
               const value = e.target.value;
@@ -232,27 +232,24 @@ export default function RealEstateShares() {
           />
 
           <div className="flex justify-between mt-4 mb-4">
-            <span className="text-gray-400">
-              Total Cost
-            </span>
-
-            <span className="font-bold text-blue-400">
-              {totalCost} ETH
-            </span>
+            <span className="text-gray-400">Total Cost</span>
+            <span className="font-bold text-blue-400">{totalCost} ETH</span>
           </div>
 
           <Button
             onClick={buyShares}
-            disabled={loading}
+            disabled={
+              loading ||
+              !/^[1-9]\d*$/.test(shareAmount) ||
+              Number(shareAmount) > Number(sharesAvailable)
+            }
             className="w-full bg-blue-600 hover:bg-blue-700"
           >
-            {loading
-              ? "Processing..."
-              : "Buy Shares"}
+            {loading ? "Processing..." : "Buy Shares"}
           </Button>
 
           {message && (
-            <p className="mt-4 text-sm text-gray-300">
+            <p className="mt-4 text-sm text-gray-300" role="status">
               {message}
             </p>
           )}

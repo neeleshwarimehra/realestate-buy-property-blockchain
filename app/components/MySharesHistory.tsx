@@ -9,11 +9,11 @@ import {
   CONTRACT_ABI,
 } from "@/lib/realEstateContract";
 
-declare global {
-  interface Window {
-    ethereum?: any;
-  }
-}
+// declare global {
+//   interface Window {
+//     ethereum?: any;
+//   }
+// }
 
 interface PurchaseTransaction {
   amount: string;

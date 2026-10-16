@@ -1,0 +1,31 @@
+{
+  "app": {
+    "[project]/app/_not-found/page": [
+      "static/media/GeistVF-s.p.0e569l9b0bre8.woff",
+      "static/media/GeistMonoVF-s.p.1lv5tp2fpjxdz.woff"
+    ],
+    "[project]/app/about/page": [
+      "static/media/GeistVF-s.p.0e569l9b0bre8.woff",
+      "static/media/GeistMonoVF-s.p.1lv5tp2fpjxdz.woff"
+    ],
+    "[project]/app/how-it-works/page": [
+      "static/media/GeistVF-s.p.0e569l9b0bre8.woff",
+      "static/media/GeistMonoVF-s.p.1lv5tp2fpjxdz.woff"
+    ],
+    "[project]/app/page": [
+      "static/media/GeistVF-s.p.0e569l9b0bre8.woff",
+      "static/media/GeistMonoVF-s.p.1lv5tp2fpjxdz.woff"
+    ],
+    "[project]/app/properties/page": [
+      "static/media/GeistVF-s.p.0e569l9b0bre8.woff",
+      "static/media/GeistMonoVF-s.p.1lv5tp2fpjxdz.woff"
+    ],
+    "[project]/app/property/[id]/page": [
+      "static/media/GeistVF-s.p.0e569l9b0bre8.woff",
+      "static/media/GeistMonoVF-s.p.1lv5tp2fpjxdz.woff"
+    ]
+  },
+  "appUsingSizeAdjust": true,
+  "pages": {},
+  "pagesUsingSizeAdjust": false
+}
