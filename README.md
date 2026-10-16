@@ -144,6 +144,3 @@ The Next.js production build completes successfully, including TypeScript checks
 
 Blockchain functionality depends on the configured contract, deployed network, and wallet setup. A successful frontend build alone does not verify that on-chain transactions work correctly.
 
-## 📄 License
-
-Add a `LICENSE` file and specify the applicable license before distributing or reusing this project.
