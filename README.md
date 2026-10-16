@@ -5,7 +5,7 @@ PropChain is a blockchain-based real estate investment demo that explores fracti
 ## 🔗 Project Links
 
 - **GitHub Repository:** [realestate-buy-property-blockchain](https://github.com/neeleshwarimehra/realestate-buy-property-blockchain)
-- **Vercel Project Dashboard:** [View on Vercel](https://vercel.com/theindiedeveloper/realestate-buy-property-blockchain)
+- **Vercel Project Dashboard:** [View on Vercel](https://realestate-buy-property-blockchain.vercel.app/)
 - **Live Demo:** Add your public Vercel deployment URL here.
 
 > Note: The Vercel dashboard link is for project management. Use the public deployment URL for visitors to access the application.
