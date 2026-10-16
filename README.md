@@ -1,224 +1,149 @@
-# Blockchain-Integrated Real Estate Platform
+# PropChain — Decentralized Fractional Real Estate Investment DApp
 
-A Web3 decentralized application (DApp) for blockchain-based real estate investment, enabling users to purchase fractional property shares using cryptocurrency. The platform integrates smart contracts, wallet connectivity, and blockchain transaction records to demonstrate transparent and verifiable share ownership.
+PropChain is a blockchain-based real estate investment demo that explores fractional property share purchases through a decentralized application (DApp). Users can connect a MetaMask wallet, view property share information, and interact with a Solidity smart contract to purchase available shares.
 
-## Overview
+## 🔗 Project Links
 
-Traditional real estate investment often requires substantial capital to purchase an entire property. This project explores fractional investment by allowing users to purchase a selected number of property shares through a blockchain-powered application.
+- **GitHub Repository:** [realestate-buy-property-blockchain](https://github.com/neeleshwarimehra/realestate-buy-property-blockchain)
+- **Vercel Project Dashboard:** [View on Vercel](https://vercel.com/theindiedeveloper/realestate-buy-property-blockchain)
+- **Live Demo:** Add your public Vercel deployment URL here.
 
-The platform combines a React.js frontend with Solidity smart contracts, enabling users to connect their cryptocurrency wallets, initiate share purchases, and track their ownership balances through blockchain transactions.
+> Note: The Vercel dashboard link is for project management. Use the public deployment URL for visitors to access the application.
 
-## Key Features
+## 📸 Screenshots
 
-- **Fractional Property Investment:** Purchase a portion of a property's available shares rather than the entire property.
-- **Smart Contract-Based Purchases:** Use Solidity smart contracts to enforce purchase rules, validate share availability, and update ownership balances.
-- **Cryptocurrency Payments:** Initiate share purchases using cryptocurrency supported by the deployed smart contract.
-- **MetaMask Wallet Integration:** Connect a wallet and authorize blockchain transactions.
-- **On-Chain Ownership Tracking:** Maintain wallet-based share ownership records through smart contract state.
-- **Transaction History:** Use blockchain transaction receipts and smart contract events to track completed purchases.
-- **Property Information:** Display property details, share prices, and available investment information through the frontend.
-- **Transparent Transactions:** Allow users to verify transactions on a compatible blockchain explorer when available.
+### Screenshot 1 — Home Page
 
-## Technology Stack
+![PropChain Screenshot 1](screenshots/1.png)
 
-### Frontend
-- React.js
-- JavaScript
-- HTML5
-- CSS3
+### Screenshot 2 — Application Overview
 
-### Blockchain and Smart Contracts
-- Solidity — smart contract development
-- Ethereum — blockchain platform or compatible development network
-- Hardhat — smart contract development, deployment, and testing environment
-- ethers.js — frontend integration with blockchain contracts
-- MetaMask — cryptocurrency wallet connectivity and transaction signing
+![PropChain Screenshot 2](screenshots/2.png)
 
-**Note:** The technologies listed above reflect the stack discussed for this project. Confirm the actual dependencies and network configuration in the repository before publishing.
+### Screenshot 3 — Property Listings
 
-## Application Architecture
+![PropChain Screenshot 3](screenshots/3.png)
 
-```text
-+----------------------------+
-|            User            |
-+----------------------------+
-              |
-              v
-+----------------------------+
-|      React.js Frontend     |
-| Property Details & Shares  |
-+----------------------------+
-              |
-              v
-+----------------------------+
-|       MetaMask Wallet      |
-| Transaction Authorization  |
-+----------------------------+
-              |
-              v
-+----------------------------+
-|          ethers.js         |
-| Smart Contract Interaction |
-+----------------------------+
-              |
-              v
-+----------------------------+
-|     Solidity Contracts     |
-| Purchase & Ownership Logic |
-+----------------------------+
-              |
-              v
-+----------------------------+
-|    Ethereum-Compatible     |
-|       Blockchain           |
-+----------------------------+
-```
+### Screenshot 4 — Property Details
 
-## How It Works
+![PropChain Screenshot 4](screenshots/4.png)
 
-1. **Connect Wallet:** The user connects MetaMask to the application.
-2. **Explore Property:** The user views property information, share pricing, and availability.
-3. **Select Shares:** The user specifies the number of shares to purchase.
-4. **Initiate Transaction:** The frontend interacts with the smart contract through ethers.js.
-5. **Validate Purchase:** The contract checks the applicable purchase conditions, share availability, and payment requirements.
-6. **Authorize Payment:** The user reviews and approves the transaction in MetaMask.
-7. **Record Ownership:** Following successful execution, the smart contract updates the relevant ownership balances.
-8. **Track Transaction:** The user can view transaction details and verify the transaction on the blockchain.
+### Screenshot 5 — Fractional Share Investment
 
-## Getting Started
+![PropChain Screenshot 5](screenshots/5.png)
+
+### Screenshot 6 — Wallet Integration
+
+![PropChain Screenshot 6](screenshots/6.png)
+
+### Screenshot 7 — Application Interface
+
+![PropChain Screenshot 7](screenshots/7.png)
+
+*Replace the screenshot headings with more specific descriptions if the images show different screens.*
+
+## ✨ Features
+
+- **MetaMask Integration:** Connect a browser wallet to interact with blockchain functionality.
+- **Fractional Share Purchases:** Enter a share quantity and calculate the estimated purchase cost.
+- **Smart Contract Integration:** Interact with Solidity smart contracts through ethers.js.
+- **Property Information:** Display property and share-related information.
+- **Investment Statistics:** View total shares, price per share, shares sold, and shares available.
+- **Wallet Share Balance:** Display the connected user's share balance when supported by the deployed contract.
+- **Transaction Feedback:** Show transaction submission, confirmation, and error messages.
+- **Responsive Web Interface:** Navigate the application on supported desktop and mobile screen sizes.
+
+## 🛠️ Technology Stack
+
+| Technology | Purpose |
+|---|---|
+| Next.js | Frontend framework and routing |
+| React | User interface |
+| TypeScript | Type-safe frontend development |
+| Solidity | Smart contract development |
+| Hardhat | Smart contract development and testing |
+| ethers.js | Blockchain and contract interaction |
+| MetaMask | Wallet connection and transaction signing |
+| Vercel | Frontend deployment and hosting |
+
+## 📁 Application Routes
+
+| Route | Description |
+|---|---|
+| `/` | Home page |
+| `/about` | About the project |
+| `/how-it-works` | Application workflow |
+| `/properties` | Property listings |
+| `/property/[id]` | Individual property details |
+
+## 🚀 Getting Started
 
 ### Prerequisites
 
-Ensure the following tools are installed:
-
-- Node.js (compatible with the project's dependencies; Node.js 20.x is suitable if supported by the repository)
-- npm
+- Node.js and npm
 - Git
-- MetaMask browser extension
+- MetaMask browser extension for wallet functionality
+- A compatible blockchain network with the required smart contract deployed
 
-### 1. Clone the Repository
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/neeleshwarimehra/realestate-buy-property-blockchain.git
 cd realestate-buy-property-blockchain
 ```
 
-### 2. Install Dependencies
-
-Install the dependencies in the directory containing `package.json`:
+### 2. Install dependencies
 
 ```bash
 npm install
 ```
 
-If the frontend and smart contracts have separate `package.json` files, run the installation command in each respective directory.
+### 3. Configure the smart contract
 
-### 3. Start a Local Blockchain
+Check `lib/realEstateContract.ts` and confirm that the contract address and ABI match the deployed Solidity contract.
 
-If the project uses Hardhat for local development, start a local node:
+Make sure MetaMask is connected to the blockchain network expected by the application.
 
-```bash
-npx hardhat node
-```
-
-Keep the terminal running while you deploy and test the contract.
-
-### 4. Deploy the Smart Contract
-
-Use the deployment script provided in the repository. For example, if the project contains `scripts/deploy.js`:
-
-```bash
-npx hardhat run scripts/deploy.js --network localhost
-```
-
-The actual command depends on the deployment scripts and Hardhat configuration in the project.
-
-After deployment, configure the frontend with the correct contract address and ABI, following the existing project structure.
-
-### 5. Connect MetaMask
-
-- Configure MetaMask to use the blockchain network where the contract is deployed.
-- Import a development account only if needed for local testing.
-- Ensure the wallet has test funds on the development network.
-- Confirm the frontend is configured with the correct network and contract address.
-
-**Security:** Never use or share a wallet's private key or recovery phrase in source code, GitHub, or public configuration files.
-
-### 6. Run the Frontend
-
-Run the command defined in the frontend's `package.json`. For example, if it uses a development script:
+### 4. Start the development server
 
 ```bash
 npm run dev
 ```
 
-If the project instead uses a `start` script, run:
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### 5. Build for production
 
 ```bash
-npm start
+npm run build
 ```
 
-Open the local URL printed in the terminal.
+## ☁️ Deployment on Vercel
 
-## Smart Contract Responsibilities
+The Next.js frontend can be deployed through Vercel.
 
-The smart contract can enforce the rules implemented in the project, including:
+1. Import the GitHub repository into Vercel.
+2. Select **Next.js** as the framework preset.
+3. Set the build command to `npm run build`.
+4. Keep the default Next.js output directory.
+5. Configure any required environment variables in the Vercel project settings.
+6. Deploy and test the public application URL.
 
-- Tracking the total number of property shares and remaining availability.
-- Defining share prices and payment requirements.
-- Validating purchase quantities.
-- Updating share ownership after successful purchases.
-- Emitting events for purchase and transaction tracking.
+**Important:** Deploying the frontend does not deploy the Solidity smart contract. The contract must be deployed separately, and the frontend must use the correct contract address, ABI, and blockchain network.
 
-The actual functions and validations depend on the Solidity contract implemented in the repository.
+## 🔐 Security Notes
 
-## Testing
+- Never commit private keys, wallet seed phrases, or API secrets.
+- Use a test network and test funds during development.
+- Review and test smart contracts before using real assets.
+- Verify the legal and ownership implications of any real-world property investment independently.
 
-If the repository includes Hardhat tests, run:
+## 📌 Project Status
 
-```bash
-npx hardhat test
-```
+The Next.js production build completes successfully, including TypeScript checks and page generation.
 
-Recommended test scenarios include:
+Blockchain functionality depends on the configured contract, deployed network, and wallet setup. A successful frontend build alone does not verify that on-chain transactions work correctly.
 
-- Successful share purchases.
-- Rejection of purchases exceeding available shares.
-- Handling insufficient payments.
-- Correct ownership balance updates.
-- Invalid purchase quantities.
-- Reversion of transactions that violate contract rules.
+## 📄 License
 
-## Security Considerations
-
-- Test contracts locally before deploying them to a public network.
-- Validate all purchase conditions inside the smart contract.
-- Protect against unauthorized transactions and incorrect ownership updates.
-- Keep private keys and sensitive credentials out of source control.
-- Review transaction failure handling in the frontend.
-- Obtain a professional smart contract security review before handling real funds.
-
-## Future Enhancements
-
-- Verified property listings and supporting legal documentation.
-- NFT-based property representation, where appropriate.
-- ERC-20 or ERC-1155 tokenization for eligible fractional assets.
-- A secondary marketplace for trading eligible property shares.
-- Rental-income distribution mechanisms.
-- Investment portfolio dashboards and analytics.
-- Automated smart contract testing and security auditing.
-
-## Important Disclaimer
-
-This project demonstrates blockchain-based fractional share purchasing and on-chain ownership accounting. A smart contract's ownership records do not, by themselves, establish legally recognized ownership of a physical property. Real-world property tokenization requires appropriate legal agreements, asset verification, and compliance with applicable regulations.
-
-## Author
-
-**Neeleshwari Mehra**
-
-- GitHub: [neeleshwarimehra](https://github.com/neeleshwarimehra)
-- Portfolio: [neeleshwarimehra.space](https://neeleshwarimehra.space)
-
-## License
-
-Add a `LICENSE` file to the repository if you intend to distribute this project under an open-source license.
+Add a `LICENSE` file and specify the applicable license before distributing or reusing this project.
